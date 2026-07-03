@@ -1,0 +1,43 @@
+@model List<Ship>
+@{
+    ViewData["Title"] = "BlueHarbor - Navi";
+}
+<h1>Navi</h1>
+<div class="actions" style="margin-bottom:1rem">
+    <a class="btn" href="/ships/new">+ Registra nave</a>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>#</th><th>Nome</th><th>Dim.</th><th>Arrivo</th>
+        <th>Durata</th><th>Stato</th><th>Note</th><th>Azioni</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var ship in Model)
+    {
+        <tr>
+            <td>@ship.Id</td>
+            <td>@ship.Name</td>
+            <td><span class="size">@ship.Size</span></td>
+            <td>giorno @ship.ArrivalDay</td>
+            <td>@ship.OccupationDuration gg</td>
+            <td><span class="badge badge-@ship.Status">@ship.Status</span></td>
+            <td class="muted">@ship.Notes</td>
+            <td>
+                @if (ship.Status == ShipStatus.PENDING)
+                {
+                    <a class="btn btn-secondary" href="/ships/@ship.Id/edit">Modifica</a>
+                }
+            </td>
+        </tr>
+    }
+    @if (Model.Count == 0)
+    {
+        <tr>
+            <td colspan="8" class="muted">Nessuna nave registrata.</td>
+        </tr>
+    }
+    </tbody>
+</table>

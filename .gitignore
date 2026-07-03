@@ -1,0 +1,17 @@
+## .NET build output
+bin/
+obj/
+*.user
+
+## Rider / JetBrains
+.idea/
+*.sln.iml
+
+## Visual Studio
+.vs/
+
+## VS Code
+.vscode/
+
+## Claude Code local config
+.claude/

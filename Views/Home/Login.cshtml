@@ -1,0 +1,46 @@
+@{
+    Layout = null;
+    ViewData["Title"] = "BlueHarbor - Accesso";
+    var hasError = Context.Request.Query.ContainsKey("error");
+    var hasLogout = Context.Request.Query.ContainsKey("logout");
+}
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/style.css">
+</head>
+<body>
+<div class="login-wrap">
+    <div class="card">
+        <h1>&#9875; BlueHarbor</h1>
+        <p class="muted">Registro Operativo Terminal</p>
+
+        @if (hasError)
+        {
+            <div class="alert alert-err">Credenziali non valide.</div>
+        }
+        @if (hasLogout)
+        {
+            <div class="alert alert-ok">Logout effettuato.</div>
+        }
+
+        <form action="/login" method="post">
+            @Html.AntiForgeryToken()
+            <label for="username">Utente</label>
+            <input type="text" id="username" name="username" autofocus required>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+            <br><br>
+            <button type="submit" class="btn" style="width:100%">Accedi</button>
+        </form>
+
+        <p class="muted" style="margin-top:1rem">
+            Utenti demo: <code>operatore/operatore</code> &middot; <code>scheduler/scheduler</code>
+        </p>
+    </div>
+</div>
+</body>
+</html>

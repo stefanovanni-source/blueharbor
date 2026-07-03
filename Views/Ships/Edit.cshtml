@@ -1,0 +1,25 @@
+@model Ship
+@{
+    ViewData["Title"] = "BlueHarbor - Modifica nave";
+}
+<h1>Modifica nave</h1>
+<div class="card">
+    <p class="muted">
+        Dimensione <span class="size">@Model.Size</span>,
+        arrivo giorno <span>@Model.ArrivalDay</span>,
+        durata <span>@Model.OccupationDuration</span> giorni.
+        (Solo nome e note sono modificabili, finche' la nave e' in stato Pending.)
+    </p>
+    <form action="/ships/@Model.Id" method="post">
+        @Html.AntiForgeryToken()
+        <label for="name">Nome nave</label>
+        <input type="text" id="name" name="name" value="@Model.Name" required autofocus>
+        <label for="notes">Note</label>
+        <textarea id="notes" name="notes" rows="3">@Model.Notes</textarea>
+        <br><br>
+        <div class="actions">
+            <button type="submit" class="btn">Salva</button>
+            <a class="btn btn-secondary" href="/ships">Annulla</a>
+        </div>
+    </form>
+</div>

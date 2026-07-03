@@ -1,0 +1,27 @@
+@{
+    ViewData["Title"] = "BlueHarbor - Dashboard";
+}
+<h1>Dashboard</h1>
+
+@if (User.IsInRole(Roles.Operatore))
+{
+    <div class="card">
+        <h2>Operatore</h2>
+        <p class="muted">Registra e mantieni le navi in arrivo. L'assegnazione delle banchine spetta allo Scheduler.</p>
+        <div class="actions">
+            <a class="btn" href="/ships">Elenco navi</a>
+            <a class="btn" href="/ships/new">+ Registra nave</a>
+        </div>
+    </div>
+}
+
+@if (User.IsInRole(Roles.Scheduler))
+{
+    <div class="card">
+        <h2>Scheduler</h2>
+        <p class="muted">Visualizza le navi in attesa e assegnale alle banchine compatibili.</p>
+        <div class="actions">
+            <a class="btn" href="/scheduler">Board assegnazioni</a>
+        </div>
+    </div>
+}

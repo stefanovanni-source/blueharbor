@@ -1,0 +1,22 @@
+@{
+    ViewData["Title"] = "BlueHarbor - Registra nave";
+}
+<h1>Registra nave</h1>
+<div class="card">
+    <p class="muted">
+        Dimensione, giorno di arrivo (entro 30 giorni) e durata di occupazione (3&ndash;15 giorni)
+        sono generati automaticamente dal sistema. La nave viene creata in stato <strong>Pending</strong>.
+    </p>
+    <form action="/ships" method="post">
+        @Html.AntiForgeryToken()
+        <label for="name">Nome nave</label>
+        <input type="text" id="name" name="name" required autofocus>
+        <label for="notes">Note</label>
+        <textarea id="notes" name="notes" rows="3"></textarea>
+        <br><br>
+        <div class="actions">
+            <button type="submit" class="btn">Registra</button>
+            <a class="btn btn-secondary" href="/ships">Annulla</a>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,55 @@
+@inject TerminalClockService ClockService
+@{
+    var currentDay = ClockService.GetCurrentDay();
+    var title = ViewData["Title"] as string ?? "BlueHarbor";
+}
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@title</title>
+    <link rel="stylesheet" href="~/css/style.css">
+</head>
+<body>
+<header class="topbar">
+    <div class="brand"><a href="/">&#9875; BlueHarbor</a></div>
+    <div class="clock">Giorno virtuale: <strong>@currentDay</strong></div>
+    <form action="/next-day" method="post" class="inline">
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-day">Next Day &rarr;</button>
+    </form>
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <div class="user">
+            <span>@User.Identity!.Name</span>
+            @if (User.IsInRole(Roles.Operatore))
+            {
+                <span class="role">Operatore</span>
+            }
+            @if (User.IsInRole(Roles.Scheduler))
+            {
+                <span class="role">Scheduler</span>
+            }
+            <form action="/logout" method="post" class="inline">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn btn-link">Logout</button>
+            </form>
+        </div>
+    }
+</header>
+
+<main class="container">
+    @if (TempData["message"] is string okMsg)
+    {
+        <div class="alert alert-ok">@okMsg</div>
+    }
+    @if (TempData["error"] is string errMsg)
+    {
+        <div class="alert alert-err">@errMsg</div>
+    }
+
+    @RenderBody()
+</main>
+</body>
+</html>

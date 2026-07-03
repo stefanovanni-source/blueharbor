@@ -1,0 +1,93 @@
+@{
+    ViewData["Title"] = "BlueHarbor - Scheduler";
+    var pendingShips = (List<Ship>)ViewData["pendingShips"]!;
+    var berths = (List<BerthOccupancy>)ViewData["berths"]!;
+}
+<h1>Board Scheduler</h1>
+
+<!-- ============ Navi in attesa ============ -->
+<h2>Navi in attesa (Pending)</h2>
+<table>
+    <thead>
+    <tr>
+        <th>#</th><th>Nome</th><th>Dim.</th><th>Arrivo</th><th>Durata</th><th>Assegna a banchina</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var ship in pendingShips)
+    {
+        <tr>
+            <td>@ship.Id</td>
+            <td>@ship.Name</td>
+            <td><span class="size">@ship.Size</span></td>
+            <td>giorno @ship.ArrivalDay</td>
+            <td>@ship.OccupationDuration gg</td>
+            <td>
+                <form action="/scheduler/assign" method="post" class="actions">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="shipId" value="@ship.Id">
+                    <select name="berthId" required>
+                        @foreach (var b in berths.Where(b => b.Size == ship.Size))
+                        {
+                            <option value="@b.BerthId">@b.Code - libera dal giorno @b.NextFreeDay</option>
+                        }
+                    </select>
+                    <button type="submit" class="btn">Assegna</button>
+                </form>
+            </td>
+        </tr>
+    }
+    @if (pendingShips.Count == 0)
+    {
+        <tr>
+            <td colspan="6" class="muted">Nessuna nave in attesa.</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<!-- ============ Stato banchine ============ -->
+<h2>Banchine</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Banchina</th><th>Dim.</th><th>Stato oggi</th><th>Libera dal</th><th>Occupazioni pianificate</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var b in berths)
+    {
+        <tr>
+            <td><strong>@b.Code</strong></td>
+            <td><span class="size">@b.Size</span></td>
+            <td>
+                @if (b.OccupiedNow)
+                {
+                    <span class="badge badge-busy">Occupata</span>
+                }
+                else
+                {
+                    <span class="badge badge-free">Libera</span>
+                }
+            </td>
+            <td>giorno @b.NextFreeDay</td>
+            <td>
+                @if (b.Windows.Count == 0)
+                {
+                    <span class="muted">&mdash;</span>
+                }
+                else
+                {
+                    @foreach (var w in b.Windows)
+                    {
+                        <div class="win">
+                            <span>@w.ShipName</span>:
+                            giorni <span>@w.StartDay</span>&ndash;<span>@(w.EndDay - 1)</span>
+                        </div>
+                    }
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

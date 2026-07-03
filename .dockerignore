@@ -1,0 +1,15 @@
+# Output di build locali: non devono finire nell'immagine
+bin/
+obj/
+
+# Cartelle IDE / VCS
+.git/
+.idea/
+.vs/
+.vscode/
+.claude/
+
+# File non necessari al runtime
+*.pdf
+DOCKER.md
+README.md
