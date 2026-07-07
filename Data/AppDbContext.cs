@@ -22,7 +22,6 @@ public class AppDbContext : DbContext
     {
         modelBuilder.Entity<Ship>(e =>
         {
-            e.ToTable("ship");
             e.Property(s => s.Name).IsRequired();
             e.Property(s => s.Notes).HasMaxLength(1000);
             e.Property(s => s.Size).HasConversion<string>().IsRequired();
@@ -33,7 +32,6 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<Berth>(e =>
         {
-            e.ToTable("berth");
             e.Property(b => b.Code).IsRequired();
             e.HasIndex(b => b.Code).IsUnique();
             e.Property(b => b.Size).HasConversion<string>().IsRequired();
@@ -41,7 +39,6 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<Assignment>(e =>
         {
-            e.ToTable("assignment");
             e.HasOne(a => a.Ship)
                 .WithMany()
                 .HasForeignKey(a => a.ShipId)
@@ -57,7 +54,6 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<TerminalClock>(e =>
         {
-            e.ToTable("terminal_clock");
             // Orologio a riga singola: id impostato manualmente, non generato.
             e.Property(c => c.Id).ValueGeneratedNever();
             e.Property(c => c.CurrentDay).IsRequired();
